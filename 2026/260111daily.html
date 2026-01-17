@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>하나되어 찬양하라 (롬30) - 주간 묵상집</title>
+    <style>
+        :root {
+            --primary: #451a03;
+            --secondary: #92400e;
+            --accent: #f59e0b;
+            --bg: #fcfaf7;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+        .container { 
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 16px 16px 60px 16px;
+        }
+        header { 
+            text-align: center; 
+            padding: 30px 20px;
+            background: white;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .church-name { font-size: 0.8rem; font-weight: bold; color: var(--secondary); margin-bottom: 6px; display: block; letter-spacing: 0.1em; }
+        h1 { font-size: 1.5rem; color: var(--primary); margin: 0 0 10px 0; line-height: 1.3; }
+        .main-scripture { 
+            display: inline-block;
+            background: #fffbeb;
+            color: var(--secondary);
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        /* 탭 스타일 */
+        .tabs-container {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            flex: 0 0 54px;
+            height: 54px;
+            border-radius: 16px;
+            border: 1px solid #eee;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            transform: translateY(-2px);
+        }
+        .tab-label { font-size: 8px; font-weight: 800; opacity: 0.7; }
+        .tab-name { font-size: 1.1rem; font-weight: 900; }
+
+        .day-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .day-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 24px;
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .day-badge { background: #fff7ed; color: #c2410c; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 99px; }
+        .cross-icon { color: #fde68a; font-size: 1.2rem; }
+        .card-title { font-size: 1.3rem; font-weight: 800; color: #111; margin: 0 0 12px 0; }
+        .scripture-box { 
+            background: #fdfaf3; 
+            padding: 14px; 
+            border-radius: 16px; 
+            font-size: 0.9rem; 
+            color: #78350f; 
+            font-style: italic; 
+            margin-bottom: 20px;
+            border: 1px solid #fef3c7;
+        }
+        .content-section { margin-bottom: 20px; }
+        .content-section label { display: block; font-size: 0.7rem; font-weight: 800; color: #9ca3af; text-transform: uppercase; margin-bottom: 6px; }
+        .reflection { font-size: 1.1rem; font-weight: 600; color: #374151; margin: 0; font-style: italic; }
+        .action { font-size: 1rem; color: #4b5563; margin: 0; }
+        .prayer-box { background: #fafafa; padding: 16px; border-radius: 16px; }
+        .prayer-box label { color: var(--accent); font-size: 0.7rem; font-weight: 800; margin-bottom: 4px; display: block; }
+        .prayer { font-size: 0.85rem; color: #6b7280; font-style: italic; margin: 0; }
+        
+        .wesley-quote {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 24px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .quote-text { font-size: 1rem; font-style: italic; margin-bottom: 10px; line-height: 1.5; }
+        .quote-author { font-size: 0.75rem; font-weight: bold; opacity: 0.7; }
+        
+        footer { text-align: center; padding: 30px 0; color: #9ca3af; font-size: 0.7rem; }
+
+        @media print {
+            .tabs-container { display: none !important; }
+            .day-content { display: block !important; margin-bottom: 30px; page-break-inside: avoid; }
+            body { background: white; }
+            .container { max-width: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="church-name">라온동행교회</span>
+            <h1>하나되어 찬양하라 (롬30)</h1>
+            <div class="main-scripture">본문: 로마서 15:1-13</div>
+        </header>
+
+        <div class="tabs-container">
+            
+      <button class="tab-btn active" onclick="showDay(1, this)">
+        <span class="tab-label">DAY 1</span>
+        <span class="tab-name">주일</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(2, this)">
+        <span class="tab-label">DAY 2</span>
+        <span class="tab-name">월</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(3, this)">
+        <span class="tab-label">DAY 3</span>
+        <span class="tab-name">화</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(4, this)">
+        <span class="tab-label">DAY 4</span>
+        <span class="tab-name">수</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(5, this)">
+        <span class="tab-label">DAY 5</span>
+        <span class="tab-name">목</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(6, this)">
+        <span class="tab-label">DAY 6</span>
+        <span class="tab-name">금</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(7, this)">
+        <span class="tab-label">DAY 7</span>
+        <span class="tab-name">토</span>
+      </button>
+    
+        </div>
+
+        <div class="contents">
+            
+      <div id="day-content-1" class="day-content active">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">주일요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">먼저 찾아오신 수용의 은혜</h3>
+          <div class="scripture-box">로마서 15:7</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"하나님께서는 우리의 연약함에도 불구하고 선행적 은총으로 우리를 먼저 용납하셨습니다. 오늘 내가 그분께 받은 조건 없는 수용을 누구에게 흘려보낼 수 있을까요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 만나는 사람 중 조금 서먹하거나 마음이 쓰이는 이에게 따뜻한 미소와 함께 먼저 인사를 건네보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">사랑의 주님, 자격 없는 저를 먼저 용납해주신 그 넓은 품을 기억합니다. 저도 오늘 누군가를 있는 그대로 인정하고 받아들이는 넉넉한 마음을 갖게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-2" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">월요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">연약함을 짊어지는 성결의 삶</h3>
+          <div class="scripture-box">로마서 15:1</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"웨슬리는 성결을 '타인을 향한 온전한 사랑'이라 가르쳤습니다. 내 주변의 연약한 지체들을 비난하기보다 그들의 약점을 내 짐으로 여기며 돕고 있나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">직장이나 가정에서 누군가 실수했을 때, 지적하기보다 '그럴 수 있지'라는 말로 덮어주고 대신 그 일을 돕거나 마무리해 주세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 제가 믿음의 강함을 자랑하지 않게 하시고, 오히려 연약한 이들의 짐을 함께 나누어 짐으로써 주님의 십자가 길을 따르는 성결한 성도가 되게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-3" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">화요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">나를 기쁘게 하지 않는 선택</h3>
+          <div class="scripture-box">로마서 15:3</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"그리스도께서는 자신을 기쁘게 하지 않으셨습니다. 나의 유익이나 권리보다 공동체의 유익을 위해 내가 양보할 수 있는 '작은 권리'는 무엇입니까?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 점심 메뉴 선택이나 대화의 주제를 정할 때, 나의 선호보다는 상대방이 원하는 것에 기쁘게 동의해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">자기를 부인하고 우리를 살리신 예수님, 저의 자아와 욕심을 내려놓고 이웃의 기쁨을 위해 저를 내어드리는 작은 헌신이 있게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-4" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">수요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">세상의 빛이 되는 사회적 성결</h3>
+          <div class="scripture-box">로마서 15:2</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"교회 밖 세상 사람들은 우리의 삶을 통해 예수님을 봅니다. 오늘 나의 정직함과 도덕적 삶이 세상에 소망의 지표가 되고 있습니까?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">사소한 기초 질서(교통 법규, 분리수거 등)를 철저히 지키며, 그리스도인으로서 이타적인 매너를 실천하는 하루를 보내세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">하나님, 저의 삶이 흙탕물에 오염되지 않는 흰 옷과 같기를 원합니다. 높은 도덕성과 정직함으로 세상 속에서 주님의 영광을 드러내게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-5" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">목요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">영혼의 표준시, 말씀의 기준</h3>
+          <div class="scripture-box">로마서 15:4</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"세슘 원자 시계가 시간의 기준이 되듯, 내 삶의 가치 판단 기준은 성경 말씀입니까? 성령님의 조명 아래 말씀을 깊이 묵상하고 있나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 하루 동안 중요한 결정을 내리기 전, 짧게라도 말씀을 읽거나 배운 구절을 떠올리며 기도로 기준을 확인하세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 변하는 세상 풍조에 흔들리지 않게 하시고, 영원한 기준인 말씀의 박동에 제 삶의 시간을 맞추며 성령님과 동행하게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-6" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">금요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">연못의 크기를 넓히는 사랑</h3>
+          <div class="scripture-box">로마서 15:5-6</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"미꾸라지를 탓하기보다 그를 품을 수 있는 연못의 크기를 넓히는 성숙함이 필요합니다. 나의 마음의 그릇은 더 넓은 사랑을 품을 준비가 되었나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">나를 불편하게 했던 사람의 장점을 하나 찾아 기록하고, 그를 위해 진심 어린 축복 기도를 짧게 드리세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 저의 좁은 마음을 넓혀 주소서. 어떤 연약한 지체라도 품을 수 있는 바다와 같은 공동체를 이루어, 우리 모두가 한 입으로 하나님께 영광 돌리게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-7" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">토요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">열방을 향한 찬양의 통로</h3>
+          <div class="scripture-box">로마서 15:13</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"우리만의 방공호가 아닌, 세상이 우리를 통해 주를 찬양하게 하는 것이 교회의 사명입니다. 내가 전해야 할 기쁨과 소망의 소식은 무엇입니까?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">지난 한 주간 느낀 은혜와 소망을 SNS나 메시지를 통해 믿지 않는 친구나 이웃에게 따뜻한 안부와 함께 전해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">소망의 하나님, 우리 공동체가 우리끼리의 즐거움에 머물지 않게 하시고, 온 열방이 주를 찬양하게 하는 구원의 통로로 쓰임 받게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+        </div>
+
+        <div class="wesley-quote">
+            <p class="quote-text">"그리스도인의 완전은 하나님을 전심으로 사랑하며, 우리의 이웃을 우리 자신처럼 사랑하는 것입니다."</p>
+            <p class="quote-author">- 존 웨슬리 -</p>
+        </div>
+
+        <footer>© 라온동행교회 주간 묵상집</footer>
+    </div>
+
+    <script>
+        function showDay(dayNum, btn) {
+            // 모든 탭 비활성화
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            // 클릭한 탭 활성화
+            btn.classList.add('active');
+            
+            // 모든 내용 숨기기
+            document.querySelectorAll('.day-content').forEach(c => c.classList.remove('active'));
+            // 선택한 내용 보이기
+            document.getElementById('day-content-' + dayNum).classList.add('active');
+            
+            // 화면 상단으로 스크롤 (부드럽게)
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

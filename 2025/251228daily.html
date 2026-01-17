@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>잠에서 깨어 그리스도로 옷 입는 삶 - 주간 묵상집</title>
+    <style>
+        :root {
+            --primary: #451a03;
+            --secondary: #92400e;
+            --accent: #f59e0b;
+            --bg: #fcfaf7;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            margin: 0; 
+            padding: 0; 
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+        .container { 
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 16px 16px 60px 16px;
+        }
+        header { 
+            text-align: center; 
+            padding: 30px 20px;
+            background: white;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        .church-name { font-size: 0.8rem; font-weight: bold; color: var(--secondary); margin-bottom: 6px; display: block; letter-spacing: 0.1em; }
+        h1 { font-size: 1.5rem; color: var(--primary); margin: 0 0 10px 0; line-height: 1.3; }
+        .main-scripture { 
+            display: inline-block;
+            background: #fffbeb;
+            color: var(--secondary);
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        /* 탭 스타일 */
+        .tabs-container {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            flex: 0 0 54px;
+            height: 54px;
+            border-radius: 16px;
+            border: 1px solid #eee;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            transform: translateY(-2px);
+        }
+        .tab-label { font-size: 8px; font-weight: 800; opacity: 0.7; }
+        .tab-name { font-size: 1.1rem; font-weight: 900; }
+
+        .day-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .day-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 24px;
+            border-left: 6px solid var(--accent);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .day-badge { background: #fff7ed; color: #c2410c; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 99px; }
+        .cross-icon { color: #fde68a; font-size: 1.2rem; }
+        .card-title { font-size: 1.3rem; font-weight: 800; color: #111; margin: 0 0 12px 0; }
+        .scripture-box { 
+            background: #fdfaf3; 
+            padding: 14px; 
+            border-radius: 16px; 
+            font-size: 0.9rem; 
+            color: #78350f; 
+            font-style: italic; 
+            margin-bottom: 20px;
+            border: 1px solid #fef3c7;
+        }
+        .content-section { margin-bottom: 20px; }
+        .content-section label { display: block; font-size: 0.7rem; font-weight: 800; color: #9ca3af; text-transform: uppercase; margin-bottom: 6px; }
+        .reflection { font-size: 1.1rem; font-weight: 600; color: #374151; margin: 0; font-style: italic; }
+        .action { font-size: 1rem; color: #4b5563; margin: 0; }
+        .prayer-box { background: #fafafa; padding: 16px; border-radius: 16px; }
+        .prayer-box label { color: var(--accent); font-size: 0.7rem; font-weight: 800; margin-bottom: 4px; display: block; }
+        .prayer { font-size: 0.85rem; color: #6b7280; font-style: italic; margin: 0; }
+        
+        .wesley-quote {
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 24px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .quote-text { font-size: 1rem; font-style: italic; margin-bottom: 10px; line-height: 1.5; }
+        .quote-author { font-size: 0.75rem; font-weight: bold; opacity: 0.7; }
+        
+        footer { text-align: center; padding: 30px 0; color: #9ca3af; font-size: 0.7rem; }
+
+        @media print {
+            .tabs-container { display: none !important; }
+            .day-content { display: block !important; margin-bottom: 30px; page-break-inside: avoid; }
+            body { background: white; }
+            .container { max-width: none; padding: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="church-name">라온동행교회</span>
+            <h1>잠에서 깨어 그리스도로 옷 입는 삶</h1>
+            <div class="main-scripture">본문: 로마서 13:11-14</div>
+        </header>
+
+        <div class="tabs-container">
+            
+      <button class="tab-btn active" onclick="showDay(1, this)">
+        <span class="tab-label">DAY 1</span>
+        <span class="tab-name">주일</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(2, this)">
+        <span class="tab-label">DAY 2</span>
+        <span class="tab-name">월</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(3, this)">
+        <span class="tab-label">DAY 3</span>
+        <span class="tab-name">화</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(4, this)">
+        <span class="tab-label">DAY 4</span>
+        <span class="tab-name">수</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(5, this)">
+        <span class="tab-label">DAY 5</span>
+        <span class="tab-name">목</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(6, this)">
+        <span class="tab-label">DAY 6</span>
+        <span class="tab-name">금</span>
+      </button>
+    
+      <button class="tab-btn " onclick="showDay(7, this)">
+        <span class="tab-label">DAY 7</span>
+        <span class="tab-name">토</span>
+      </button>
+    
+        </div>
+
+        <div class="contents">
+            
+      <div id="day-content-1" class="day-content active">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">주일요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">선행적 은총: 깨우시는 하나님의 손길</h3>
+          <div class="scripture-box">로마서 13:11</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"하나님은 우리가 잠들어 있을 때에도 먼저 찾아와 깨워주시는 분입니다. 최근 당신의 영혼을 깨우기 위해 하나님이 보내신 신호나 사건은 무엇이었나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 아침 눈을 뜨자마자 '주님, 제가 깨어 주님을 바라보게 하시니 감사합니다'라고 고백하며 하루를 시작해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">사랑의 주님, 제가 영적인 잠에 빠져 있을 때에도 포기하지 않고 깨워주시는 당신의 선행적 은총에 감사합니다. 오늘 하루 깨어 있는 영성으로 살게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-2" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">월요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">성결의 쉼: 사명을 위한 안식</h3>
+          <div class="scripture-box">시편 23:2-3</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"웨슬리안에게 안식은 단순히 쉬는 것이 아니라 '영혼을 소생시켜 의의 길로 가기 위한' 준비입니다. 당신의 쉼은 다음 사역을 위한 충전인가요, 아니면 회피인가요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 10분 동안 아무것도 하지 않고 주님의 현존 앞에 머물며, 주님이 주시는 평안이 내 사명으로 이어지길 기도하세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">목자 되신 주님, 주님이 주시는 푸른 풀밭의 안식을 누리게 하시고, 그 쉼을 통해 다시 세상 속에서 빛의 갑옷을 입고 나갈 새 힘을 얻게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-3" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">화요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">한결같은 성결: 냄비 신앙을 넘어서</h3>
+          <div class="scripture-box">로마서 13:12</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"금방 뜨거워졌다가 식는 '양은 냄비' 같은 신앙이 아닌, 은은하게 타오르는 성결의 삶을 살고 있나요? 감정이 아닌 의지로 주님과 동행하는 영역은 무엇인가요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">감정의 기복에 상관없이 오늘 내가 반드시 지켜야 할 영적 루틴(말씀 읽기, 감사 일기 등) 하나를 정해 실천해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 제 신앙이 수련회나 부흥회 때만 반짝이는 것이 아니라, 일상의 지루함 속에서도 꾸준히 성결을 연습하는 성숙한 신앙이 되게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-4" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">수요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">사회적 성결: 초막을 넘어 세상으로</h3>
+          <div class="scripture-box">마태복음 17:4</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"베드로는 산 위에 초막을 짓고 머물고 싶어 했지만, 예수님은 고통받는 이들이 있는 산 아래로 내려가셨습니다. 나만의 은혜의 울타리에 갇혀 소외시킨 이웃은 없나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">내 신앙의 안락함에만 머물지 말고, 오늘 도움이 필요한 주변의 한 사람에게 먼저 연락하거나 작은 친절을 베풀어 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 나만 구원받으면 된다는 이기적인 신앙에서 벗어나게 하소서. 산 아래 세상의 아픔에 공감하며 사회적 성결을 실천하는 제자가 되길 원합니다.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-5" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">목요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">제사장의 거룩함: 10할의 삶을 향하여</h3>
+          <div class="scripture-box">베드로전서 2:9</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"그리스도인은 삶의 모든 순간이 '예배'여야 합니다. 3할의 타자가 아닌, 모든 타석에서 최선을 다하는 영적 제사장으로서 당신의 태도는 어떠합니까?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 내가 하는 일(업무, 가사, 공부 등)을 '주님께 하듯' 정성을 다해 수행하며, 그것이 나의 영적 제사임을 기억하세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">거룩하신 주님, 제가 교회 안에서만 그리스도인이 아니라 카페에서, 직장에서, 가정에서 늘 하나님 앞에 서 있는 단정한 모습으로 살게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-6" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">금요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">완전한 사랑: 보내주신 한 사람을 위해</h3>
+          <div class="scripture-box">로마서 13:14</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"목사님이 카페를 찾아온 한 후배를 끝까지 가르치고 섬긴 것처럼, 하나님이 오늘 당신에게 '보내주신 한 사람'은 누구입니까? 그를 어떻게 그리스도의 사랑으로 입히시겠습니까?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">나를 힘들게 하거나 내 기준에 차지 않는 누군가를 비난하기보다, 주님이 보내신 사람임을 믿고 한 번 더 인내하며 격려의 말을 건네세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">사랑의 주님, 제 본성이 튀어나오려 할 때마다 주 예수 그리스도로 옷 입게 하소서. 내 힘이 아닌 주님의 사랑으로 그 한 사람을 온전히 품게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-7" class="day-content ">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">토요일 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">성숙한 소명: 신앙의 수준을 높이라</h3>
+          <div class="scripture-box">히브리서 6:1</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"수십 년간 신앙생활을 했음에도 여전히 사칙연산 수준의 초보 신앙에 머물러 있지는 않나요? 어제보다 더 나은 영적 성숙을 위해 오늘 새롭게 결단할 것은 무엇입니까?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">신앙을 취미가 아닌 사명으로 받아들이고, 이번 주 설교 내용 중 내가 가장 실천하기 어려웠던 한 가지를 골라 다시 도전해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">성숙의 주님, 머무름에 안주하지 않고 그리스도의 완전을 향해 나아가는 삶이 되게 하소서. 라온동행교회 공동체와 함께 날마다 자라나길 소망합니다.</p>
+          </div>
+        </div>
+      </div>
+    
+        </div>
+
+        <div class="wesley-quote">
+            <p class="quote-text">"그리스도인의 완전은 하나님을 전심으로 사랑하며, 우리의 이웃을 우리 자신처럼 사랑하는 것입니다."</p>
+            <p class="quote-author">- 존 웨슬리 -</p>
+        </div>
+
+        <footer>© 라온동행교회 주간 묵상집</footer>
+    </div>
+
+    <script>
+        function showDay(dayNum, btn) {
+            // 모든 탭 비활성화
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            // 클릭한 탭 활성화
+            btn.classList.add('active');
+            
+            // 모든 내용 숨기기
+            document.querySelectorAll('.day-content').forEach(c => c.classList.remove('active'));
+            // 선택한 내용 보이기
+            document.getElementById('day-content-' + dayNum).classList.add('active');
+            
+            // 화면 상단으로 스크롤 (부드럽게)
+            window.scrollTo({ top: 100, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
