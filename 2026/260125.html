@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>동역의 영광, 21세기의 뵈뵈를 찾아서 - 주간 묵상집</title>
+    <style>
+        :root {
+            --primary: #451a03;
+            --secondary: #92400e;
+            --accent: #f59e0b;
+            --bg: #fcfaf7;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; line-height: 1.6; word-break: keep-all;
+        }
+        .container { width: 100%; max-width: 500px; margin: 0 auto; padding: 16px 16px 60px 16px; }
+        header { text-align: center; padding: 30px 20px; background: white; border-radius: 24px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .church-name { font-size: 0.8rem; font-weight: bold; color: var(--secondary); margin-bottom: 6px; display: block; letter-spacing: 0.1em; }
+        h1 { font-size: 1.5rem; color: var(--primary); margin: 0 0 10px 0; line-height: 1.3; }
+        .date-range { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; display: block; }
+        .main-scripture { display: inline-block; background: #fffbeb; color: var(--secondary); padding: 4px 12px; border-radius: 99px; font-size: 0.8rem; font-weight: 700; }
+        .tabs-container { display: flex; gap: 6px; margin-bottom: 20px; overflow-x: auto; padding: 4px 4px 12px 4px; scrollbar-width: none; }
+        .tabs-container::-webkit-scrollbar { display: none; }
+        .tab-btn { position: relative; flex: 0 0 58px; height: 58px; border-radius: 16px; border: 1px solid #eee; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease; }
+        .tab-btn.active { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); transform: translateY(-2px); }
+        .tab-btn.locked { background: #f3f4f6; color: #9ca3af; cursor: not-allowed; border-color: #e5e7eb; }
+        .lock-icon { position: absolute; top: -5px; right: -5px; font-size: 10px; background: #9ca3af; color: white; width: 16px; height: 16px; border-radius: 50%; display: none; align-items: center; justify-content: center; }
+        .tab-btn.locked .lock-icon { display: flex; }
+        .tab-btn.locked .tab-name, .tab-btn.locked .tab-label { opacity: 0.5; }
+        .tab-label { font-size: 8px; font-weight: 800; opacity: 0.7; }
+        .tab-name { font-size: 1.1rem; font-weight: 900; }
+        .day-content { display: none; animation: fadeIn 0.3s ease-out; }
+        .day-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .card { background: var(--card-bg); border-radius: 24px; padding: 24px; border-left: 6px solid var(--accent); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        .day-badge { background: #fff7ed; color: #c2410c; font-size: 0.75rem; font-weight: 900; padding: 4px 12px; border-radius: 99px; }
+        .cross-icon { color: #fde68a; font-size: 1.2rem; }
+        .card-title { font-size: 1.3rem; font-weight: 800; color: #111; margin: 0 0 12px 0; }
+        .scripture-box { background: #fdfaf3; padding: 14px; border-radius: 16px; font-size: 0.9rem; color: #78350f; font-style: italic; margin-bottom: 20px; border: 1px solid #fef3c7; }
+        .content-section { margin-bottom: 20px; }
+        .content-section label { display: block; font-size: 0.7rem; font-weight: 800; color: #9ca3af; text-transform: uppercase; margin-bottom: 6px; }
+        .reflection { font-size: 1.1rem; font-weight: 600; color: #374151; margin: 0; font-style: italic; }
+        .action { font-size: 1rem; color: #4b5563; margin: 0; }
+        .prayer-box { background: #fafafa; padding: 16px; border-radius: 16px; }
+        .prayer-box label { color: var(--accent); font-size: 0.7rem; font-weight: 800; margin-bottom: 4px; display: block; }
+        .prayer { font-size: 0.85rem; color: #6b7280; font-style: italic; margin: 0; }
+        .wesley-quote { background: var(--primary); color: white; padding: 30px 20px; border-radius: 24px; text-align: center; margin-top: 30px; }
+        footer { text-align: center; padding: 30px 0; color: #9ca3af; font-size: 0.7rem; }
+        @media print { .tabs-container { display: none !important; } .day-content { display: block !important; margin-bottom: 30px; page-break-inside: avoid; } body { background: white; } .container { max-width: none; padding: 0; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="church-name">라온동행교회</span>
+            <h1>동역의 영광, 21세기의 뵈뵈를 찾아서</h1>
+            <span class="date-range">2026.1.25 (주일) ~ 2026.1.31 (토)</span>
+            <div class="main-scripture">본문: 로마서 16:1-2</div>
+        </header>
+        <div class="tabs-container">
+      <button id="tab-btn-1" class="tab-btn" onclick="showDay(1, this)">
+        <span class="tab-label">1/25</span>
+        <span class="tab-name">주일</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      
+      <button id="tab-btn-2" class="tab-btn" onclick="showDay(2, this)">
+        <span class="tab-label">1/26</span>
+        <span class="tab-name">월</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      
+      <button id="tab-btn-3" class="tab-btn" onclick="showDay(3, this)">
+        <span class="tab-label">1/27</span>
+        <span class="tab-name">화</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      
+      <button id="tab-btn-4" class="tab-btn" onclick="showDay(4, this)">
+        <span class="tab-label">1/28</span>
+        <span class="tab-name">수</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      
+      <button id="tab-btn-5" class="tab-btn" onclick="showDay(5, this)">
+        <span class="tab-label">1/29</span>
+        <span class="tab-name">목</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      
+      <button id="tab-btn-6" class="tab-btn" onclick="showDay(6, this)">
+        <span class="tab-label">1/30</span>
+        <span class="tab-name">금</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      
+      <button id="tab-btn-7" class="tab-btn" onclick="showDay(7, this)">
+        <span class="tab-label">1/31</span>
+        <span class="tab-name">토</span>
+        <span class="lock-icon">🔒</span>
+      </button>
+      </div>
+        <div class="contents">
+      <div id="day-content-1" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/25 (주일) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">한 영혼을 향한 하나님의 선행적 은총</h3>
+          <div class="scripture-box">로마서 16:1</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"바울의 편지가 로마에 도착하기까지 막대한 비용과 헌신이 필요했음을 묵상해 보세요. 당신이 복음을 듣기까지 하나님께서 미리 예비하신 사랑의 손길들은 무엇이었나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 나에게 복음의 소식을 전해주었거나 신앙의 길로 이끌어준 분을 떠올리며 감사 메시지를 보내봅시다.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">사랑의 주님, 제가 주님을 알기 전부터 수많은 이들의 헌신을 통해 저에게 복음의 빛을 비추어 주신 그 선행적 은총에 감사를 드립니다.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-2" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/26 (월) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">계급을 넘어선 거룩한 공동체</h3>
+          <div class="scripture-box">로마서 16:3-16</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"로마서 명단에는 노예와 귀족, 남성과 여성이 공존합니다. 우리 공동체 안에서 내가 선입견을 품고 바라보았던 지체는 없었는지 돌아보며, 차별 없는 성결한 사랑을 품고 계신가요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">평소에 잘 대화해보지 않았던 지체에게 먼저 다가가 따뜻한 안 인사를 건네거나 작은 간식을 나누어 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 세상의 기준이 아닌 주님의 시선으로 이웃을 바라보게 하소서. 모든 지체를 한 가족으로 존중하는 성결한 공동체를 일구게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-3" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/27 (화) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">우리는 모두 그리스도의 일꾼입니다</h3>
+          <div class="scripture-box">로마서 16:1</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"바울은 자신과 뵈뵈를 똑같은 '디아코노스(일꾼)'로 불렀습니다. 목회자만이 사역자가 아니라 나 또한 하나님 나라의 사역자라는 사실이 당신에게 어떤 사명감을 주나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">오늘 내가 처한 삶의 현장(가정, 직장)을 '사역지'라고 선포하고, 그곳에서 주님의 성품을 드러내는 일 한 가지를 실천해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">저를 주님의 거룩한 일꾼으로 불러주시니 감사합니다. 낮은 곳에서 섬기셨던 예수님처럼, 저도 오늘의 삶을 기쁨으로 섬기게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-4" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/28 (수) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">든든한 보호자가 되어주는 사랑</h3>
+          <div class="scripture-box">로마서 16:2</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"뵈뵈는 바울의 법적, 재정적 후원자인 '프로스타티스(보호자)'였습니다. 내 곁에 있는 지체나 교회를 위해 내가 기꺼이 내어줄 수 있는 '보호자의 공간'은 무엇일까요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">교회의 보이지 않는 필요나 어려움을 겪는 지체를 위해 구체적인 도움(중보기도, 재정적 후원, 시간 내어주기 등)을 계획해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">하나님, 저에게 주신 자원들이 나만을 위해 쓰이지 않고 누군가의 울타리가 되게 하소서. 복음의 길을 걷는 이들에게 쉼터가 되는 삶을 살게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-5" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/29 (목) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">사회적 성결을 위한 이웃사촌의 회복</h3>
+          <div class="scripture-box">로마서 12:15</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"현대 사회는 이웃과의 관계가 단절되어 가고 있습니다. 웨슬리가 강조한 '사회적 성결'의 관점에서, 교회가 어떻게 하면 지역 사회의 따뜻한 이웃사촌이 될 수 있을까요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">내가 사는 동네의 이웃이나 경비원, 미소 짓기 힘든 상황에 있는 분들에게 밝은 표정으로 진심 어린 감사를 표현해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 나 혼자만의 거룩에 머물지 않게 하소서. 이웃의 아픔에 공감하고 함께 울고 웃는 공동체적인 성결의 삶으로 저를 인도하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-6" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/30 (금) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">마비되지 않는 건강한 지체로 살기</h3>
+          <div class="scripture-box">로마서 12:4-5</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"교회의 20%만이 움직이는 것이 아니라 모든 지체가 함께 움직일 때 생명력이 넘칩니다. 당신은 현재 그리스도의 몸 안에서 건강하게 움직이는 지체인가요, 아니면 머물러 있는 지체인가요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">이번 주일, 내가 공동체를 위해 새롭게 봉사하거나 도울 수 있는 작은 역할(예: 예배 안내, 청소, 환영 등)을 찾아 실천해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">주님, 저를 그리스도의 몸 된 교회의 소중한 부분으로 삼아주시니 감사합니다. 마비된 지체가 아닌 생동감 있게 움직이며 서로를 돕는 지체가 되게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    
+      <div id="day-content-7" class="day-content">
+        <div class="card">
+          <div class="card-header">
+            <span class="day-badge">1/31 (토) 묵상</span>
+            <span class="cross-icon">✝</span>
+          </div>
+          <h3 class="card-title">완전한 사랑을 향한 동역의 여정</h3>
+          <div class="scripture-box">로마서 16:25-27</div>
+          
+          <div class="content-section">
+            <label>묵상 질문</label>
+            <p class="reflection">"바울과 뵈뵈, 그리고 수많은 동역자의 이름은 결국 하나님의 영광을 위한 것이었습니다. 당신의 이름이 하나님 나라의 생명책에 '주님의 기쁨이 된 동역자'로 기록되길 소망하시나요?"</p>
+          </div>
+          
+          <div class="content-section">
+            <label>실천 방안</label>
+            <p class="action">한 주간의 묵상을 정리하며, 앞으로 내가 라온동행교회에서 어떤 '동역의 열매'를 맺고 싶은지 일기장에 적어보고 주님께 약속해 보세요.</p>
+          </div>
+          
+          <div class="prayer-box">
+            <label>오늘의 기도</label>
+            <p class="prayer">영광의 하나님, 한 주간 뵈뵈의 삶을 통해 저를 도전하시니 감사합니다. 평생토록 주님과 동행하며 완전한 사랑을 실천하는 신실한 동역자로 살아가게 하소서.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+        <div class="wesley-quote">
+            <p style="font-style:italic; margin-bottom:10px;">"그리스도인의 완전은 하나님을 전심으로 사랑하며, 이웃을 사랑하는 것입니다."</p>
+            <p style="font-size:0.75rem; opacity:0.7;">- 존 웨슬리 -</p>
+        </div>
+        <footer>© 라온동행교회 주간 묵상집</footer>
+    </div>
+    <script>
+        const startDate = new Date('2026-01-25');
+        startDate.setHours(0,0,0,0);
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        const diffDays = Math.floor((today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        const todayDayNum = Math.max(0, Math.min(7, diffDays + 1));
+
+        function init() {
+            for (let i = 1; i <= 7; i++) {
+                const btn = document.getElementById('tab-btn-' + i);
+                if (i > todayDayNum) btn.classList.add('locked');
+            }
+            const activeNum = todayDayNum === 0 ? 1 : todayDayNum;
+            showDay(activeNum, document.getElementById('tab-btn-' + activeNum), true);
+        }
+
+        function showDay(dayNum, btn, isInit = false) {
+            if (!isInit && dayNum > todayDayNum) {
+                alert('해당 요일의 묵상은 아직 공개되지 않았습니다. 내일을 기다려주세요! 😊');
+                return;
+            }
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+            document.querySelectorAll('.day-content').forEach(c => c.classList.remove('active'));
+            const content = document.getElementById('day-content-' + dayNum);
+            if (content) content.classList.add('active');
+            if(!isInit) window.scrollTo({ top: 120, behavior: 'smooth' });
+        }
+        window.onload = init;
+    </script>
+</body>
+</html>
