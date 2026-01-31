@@ -135,79 +135,91 @@
             <p class="subtitle">매일의 은혜를 기록하고 기억합니다 🙏</p>
         </header>
 
-        <div class="month-section">
-            <h2 class="month-title">📅 2026년 1월</h2>
-            <div class="grid">
-                
-                <!-- 
-                  [폴더 링크 방식]
-                  href="폴더명/파일명.html" 
-                -->
-                 
-                <!-- 1월 4주 -->
-                <a href="2026/260125daily.html" target="_blank" class="card latest">
-                    <div class="badge-new">NEW ✨</div>
-                    <div>
-                        <div class="card-date">🔔 1월 4주 (01.25 ~ )</div>
-                        <div class="card-title">일꾼 뵈뵈<br>롬 32</div>
-                    </div>
-                    <div class="card-icon">묵상하러 가기 👉</div>
-                </a>
-                <!-- 1월 3주 -->
-                <a href="2026/260118daily.html" target="_blank" class="card">
-                    <div>
-                        <div class="card-date">🔔 1월 3주 (01.18 ~ )</div>
-                        <div class="card-title">당신이 보고 싶습니다<br>롬 31</div>
-                    </div>
-                    <div class="card-icon">묵상하러 가기 👉</div>
-                </a>
-
-                <!-- 1월 2주 -->
-                <a href="2026/260111daily.html" target="_blank" class="card">
-                    <div>
-                        <div class="card-date">🔔 1월 2주 (01.11 ~ )</div>
-                        <div class="card-title">주와 동행하는 기쁨<br>롬 30</div>
-                    </div>
-                    <div class="card-icon">다시 보기 📖</div>
-                </a>
-
-                <!-- 1월 1주 -->
-                <a href="2026/260104daily.html" target="_blank" class="card">
-                    <div>
-                        <div class="card-date">🗓️ 1월 1주 (01.04 ~ )</div>
-                        <div class="card-title">새해를 여는<br>첫 마음가짐 롬(29)</div>
-                    </div>
-                    <div class="card-icon">다시 보기 📖</div>
-                </a>
-
-            </div>
-        </div>
-
-        <div class="month-section">
-            <h2 class="month-title">📅 2025년 12월</h2>
-            <div class="grid">
-                
-                <!-- 12월 마지막 주 (2025 폴더 안에 있음) -->
-                <a href="2025/251228daily.html" target="_blank" class="card">
-                    <div>
-                        <div class="card-date">🗓️ 12월 마지막 주 (12.28 ~ )</div>
-                        <div class="card-title">한 해를 마무리하며<br>감사로 여는 새날</div>
-                    </div>
-                    <div class="card-icon">다시 보기 📖</div>
-                </a>
-                
-                <a href="2025/251225daily.html" target="_blank" class="card">
-                    <div>
-                        <div class="card-date">🗓️ 12월 성탄절</div>
-                        <div class="card-title">베들레헴 에브라다야<br>성탄절</div>
-                    </div>
-                    <div class="card-icon">다시 보기 📖</div>
-                </a>
-
-            </div>
+        <div id="archive-container">
+            <!-- Dynamic content will be injected here -->
         </div>
 
     </div>
+
+    <script src="data/archiveData.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('archive-container');
+            if (!container || !window.ARCHIVE_DATA) return;
+
+            // Group by Year and Month
+            const groups = {};
+            window.ARCHIVE_DATA.forEach((item, index) => {
+                const date = new Date(item.date);
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const key = `${year}-${month}`;
+                
+                if (!groups[key]) {
+                    groups[key] = {
+                        year,
+                        month,
+                        items: []
+                    };
+                }
+                groups[key].items.push({ ...item, isLatest: index === 0 });
+            });
+
+            // Sort keys descending
+            const sortedKeys = Object.keys(groups).sort((a, b) => {
+                const [yA, mA] = a.split('-').map(Number);
+                const [yB, mB] = b.split('-').map(Number);
+                if (yA !== yB) return yB - yA;
+                return mB - mA;
+            });
+
+            sortedKeys.forEach(key => {
+                const group = groups[key];
+                const section = document.createElement('div');
+                section.className = 'month-section';
+
+                const title = document.createElement('h2');
+                title.className = 'month-title';
+                title.textContent = `📅 ${group.year}년 ${group.month}월`;
+                section.appendChild(title);
+
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+
+                group.items.forEach(item => {
+                    const card = document.createElement('a');
+                    card.href = item.url;
+                    card.target = '_blank';
+                    card.className = `card ${item.isLatest ? 'latest' : ''}`;
+
+                    let badgeHtml = '';
+                    if (item.isLatest) {
+                        badgeHtml = '<div class="badge-new">NEW ✨</div>';
+                    }
+
+                    const dateObj = new Date(item.date);
+                    const weekOfMonth = Math.ceil(dateObj.getDate() / 7);
+                    const formattedDate = `${dateObj.getMonth() + 1}.${dateObj.getDate().toString().padStart(2, '0')}`;
+                    
+                    // Specific formatting for week text if possible, or just default to date
+                    const weekText = `${dateObj.getMonth() + 1}월 ${weekOfMonth}주 (${formattedDate} ~ )`;
+
+                    card.innerHTML = `
+                        ${badgeHtml}
+                        <div>
+                            <div class="card-date">🔔 ${weekText}</div>
+                            <div class="card-title">${item.title}${item.scripture ? '<br>' + item.scripture : ''}</div>
+                        </div>
+                        <div class="card-icon">${item.isLatest ? '묵상하러 가기 👉' : '다시 보기 📖'}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+
+                section.appendChild(grid);
+                container.appendChild(section);
+            });
+        });
+    </script>
 
 </body>
 </html>
